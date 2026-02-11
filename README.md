@@ -1,14 +1,6 @@
 # Stripe Dashboard Shell
 
-A reusable React dashboard shell inspired by Stripe's dashboard design. Perfect for quickly bootstrapping admin panels and internal tools.
-
-## Features
-
-- **250px fixed-width sidebar** with navigation items, sections, and expandable menus
-- **60px header** with search bar and action buttons
-- **Responsive layout** with proper overflow handling
-- **Icon system** with commonly used dashboard icons
-- **Tailwind CSS** for easy customization
+A reusable React dashboard shell inspired by Stripe's dashboard design. Perfect for quickly bootstrapping admin panels, internal tools, and prototypes.
 
 ## Quick Start
 
@@ -17,168 +9,299 @@ npm install
 npm run dev
 ```
 
-Visit `http://localhost:5173` to see the dashboard.
+Visit `http://localhost:5173` to see the dashboard with component examples.
 
-## Usage
+## Features
 
-### Basic Usage
+- **Stripe-style layout** - 250px sidebar + 60px header + scrollable content area
+- **Pre-built components** - Badge, Button, Input, Select, Table, Toggle, Tooltip, and more
+- **Dark mode support** - CSS variables automatically switch with `.dark-mode` class
+- **Routing ready** - React Router setup with individual page files
+- **Responsive** - Components adapt to container width using `@container` queries
+
+## Project Structure
+
+```
+src/
+├── components/
+│   ├── PlatformLayout.jsx   # Sidebar, Header, NavItem, SubNavItem
+│   ├── Badge.jsx            # Status badges
+│   ├── Button.jsx           # Primary, secondary, danger buttons
+│   ├── Input.jsx            # Input, Select, Textarea
+│   ├── Table.jsx            # Responsive table with mobile view
+│   ├── Toggle.jsx           # Switch toggle
+│   ├── ToggleCard.jsx       # Selectable cards
+│   └── Tooltip.jsx          # Hover tooltips
+├── icons/
+│   └── SailIcons.jsx        # SVG icon system
+├── pages/                   # One file per route
+│   ├── Home.jsx
+│   ├── Balances.jsx
+│   ├── Transactions.jsx
+│   └── ...
+├── App.jsx                  # Main layout + routes
+├── main.jsx                 # Entry point
+└── index.css                # Tailwind + CSS variables
+```
+
+## Layout
+
+The main layout in `App.jsx`:
 
 ```jsx
-import { DashboardShell } from './components/PlatformLayout';
-
-function App() {
-  return (
-    <DashboardShell>
-      <div className="p-8">
-        <h1>Your Content Here</h1>
+<div className="flex flex-col h-screen overflow-hidden">
+  <div className="flex flex-row flex-1 min-h-0 bg-white">
+    <Sidebar />
+    <div className="w-full flex flex-col min-w-0 relative overflow-auto">
+      <div className="max-w-[1280px] w-full mx-auto">
+        <Header sticky />
+        {/* Your content here */}
       </div>
-    </DashboardShell>
-  );
-}
-```
-
-### With Navigation Items
-
-```jsx
-import { DashboardShell } from './components/PlatformLayout';
-import { Icon } from './icons/SailIcons';
-
-function App() {
-  const navItems = [
-    { icon: <Icon name="home" size="small" fill="currentColor" />, label: "Home", to: "/" },
-    { icon: <Icon name="balance" size="small" fill="currentColor" />, label: "Balances" },
-    { icon: <Icon name="person" size="small" fill="currentColor" />, label: "Customers" },
-  ];
-
-  const productItems = [
-    { icon: <Icon name="wallet" size="small" fill="currentColor" />, label: "Payments" },
-    { icon: <Icon name="invoice" size="small" fill="currentColor" />, label: "Billing" },
-  ];
-
-  const logo = (
-    <div className="flex items-center space-x-2">
-      <img src="/logo.png" alt="Logo" className="w-6 h-6" />
-      <span className="font-semibold text-sm">Your App</span>
     </div>
-  );
-
-  return (
-    <DashboardShell
-      sidebar={{ logo, navItems, productItems }}
-      header={{ sticky: true }}
-    >
-      <div className="p-8">Your content</div>
-    </DashboardShell>
-  );
-}
-```
-
-### Fully Custom Sidebar
-
-```jsx
-import {
-  DashboardShell,
-  Sidebar,
-  NavItem,
-  SubNavItem,
-  SectionHeading,
-  ExpandableNavItem
-} from './components/PlatformLayout';
-
-function App() {
-  const customSidebar = (
-    <Sidebar logo={<YourLogo />}>
-      <NavItem icon={<HomeIcon />} label="Home" to="/" />
-      <NavItem icon={<UsersIcon />} label="Users" />
-
-      <SectionHeading label="Settings" />
-      <ExpandableNavItem icon={<GearIcon />} label="Config" defaultExpanded>
-        <SubNavItem label="General" />
-        <SubNavItem label="Security" highlighted />
-      </ExpandableNavItem>
-    </Sidebar>
-  );
-
-  return (
-    <DashboardShell sidebar={customSidebar}>
-      <div className="p-8">Your content</div>
-    </DashboardShell>
-  );
-}
+  </div>
+</div>
 ```
 
 ## Components
 
-### DashboardShell
-The main layout wrapper combining sidebar, header, and content area.
+### Badge
 
-| Prop | Type | Description |
-|------|------|-------------|
-| `sidebar` | object \| ReactNode | Props for Sidebar or custom component |
-| `header` | object \| ReactNode | Props for Header or custom component |
-| `children` | ReactNode | Main content area |
+```jsx
+import Badge from './components/Badge';
 
-### Sidebar
-The left navigation sidebar (250px wide).
+<Badge>Default</Badge>
+<Badge variant="success">Success</Badge>
+<Badge variant="warning">Warning</Badge>
+<Badge variant="danger">Danger</Badge>
+<Badge variant="info">Info</Badge>
+```
 
-| Prop | Type | Description |
-|------|------|-------------|
-| `logo` | ReactNode | Logo/branding area content |
-| `navItems` | array | Main navigation items |
-| `productItems` | array | Product section items |
-| `children` | ReactNode | Full custom content |
+### Button
 
-### Header
-The top header bar (60px tall).
+```jsx
+import Button from './components/Button';
 
-| Prop | Type | Description |
-|------|------|-------------|
-| `sticky` | boolean | Stick to top on scroll |
-| `search` | ReactNode | Custom search component |
-| `actions` | ReactNode | Custom action buttons |
+<Button>Primary</Button>
+<Button variant="secondary">Secondary</Button>
+<Button variant="danger">Danger</Button>
+<Button disabled>Disabled</Button>
+<Button icon="add">With Icon</Button>
+<Button size="sm">Small</Button>
+<Button size="lg">Large</Button>
+```
 
-### NavItem
-A navigation item with icon.
+### Input, Select, Textarea
 
-| Prop | Type | Description |
-|------|------|-------------|
-| `icon` | ReactNode | Icon element |
-| `label` | string | Item label |
-| `to` | string | React Router path |
-| `highlighted` | boolean | Purple highlight color |
-| `active` | boolean | Active background state |
+```jsx
+import Input, { Select, Textarea } from './components/Input';
 
-### ExpandableNavItem
-A collapsible navigation section.
+<Input
+  placeholder="Enter text"
+  value={value}
+  onChange={(e) => setValue(e.target.value)}
+/>
 
-| Prop | Type | Description |
-|------|------|-------------|
-| `icon` | ReactNode | Section icon |
-| `label` | string | Section label |
-| `defaultExpanded` | boolean | Start expanded |
-| `children` | ReactNode | SubNavItem children |
+<Input prefix="$" placeholder="Amount" />
+<Input suffix="USD" placeholder="Price" />
+<Input error errorMessage="This field is required" />
 
-## Available Icons
+<Select value={value} onChange={(e) => setValue(e.target.value)}>
+  <option value="1">Option 1</option>
+  <option value="2">Option 2</option>
+</Select>
 
-The included icon set provides these icons:
-- `home`, `balance`, `arrowsLoop`, `person`, `product`
-- `platform`, `chevronDown`, `wallet`, `invoice`, `barChart`
-- `more`, `search`, `notifications`, `settings`, `add`
+<Textarea placeholder="Enter message" rows={3} />
+```
+
+### Table
+
+```jsx
+import Table from './components/Table';
+
+const columns = [
+  { key: 'name', header: 'Name', width: 'grow' },
+  { key: 'email', header: 'Email' },
+  { key: 'status', header: 'Status', render: (item) => <Badge>{item.status}</Badge> },
+  { key: 'amount', header: 'Amount', align: 'right' },
+];
+
+const data = [
+  { id: 1, name: 'John', email: 'john@example.com', status: 'Active', amount: '$100' },
+];
+
+<Table
+  columns={columns}
+  data={data}
+  onRowClick={(item) => console.log(item)}
+  mobileRow={(item, onClick) => (
+    <div onClick={onClick} className="p-4 border-b">
+      <div className="font-medium">{item.name}</div>
+      <div className="text-gray-500">{item.email}</div>
+    </div>
+  )}
+/>
+```
+
+### Toggle
+
+```jsx
+import Toggle from './components/Toggle';
+
+<Toggle
+  checked={checked}
+  onChange={(e) => setChecked(e.target.checked)}
+  label="Enable feature"
+/>
+```
+
+### ToggleCard
+
+```jsx
+import ToggleCard, { ToggleCardGroup } from './components/ToggleCard';
+
+<ToggleCardGroup label="Select an option">
+  <ToggleCard
+    title="Option A"
+    description="Description for option A"
+    selected={selected === 'a'}
+    onClick={() => setSelected('a')}
+  />
+  <ToggleCard
+    title="Option B"
+    description="Description for option B"
+    selected={selected === 'b'}
+    onClick={() => setSelected('b')}
+  />
+</ToggleCardGroup>
+```
+
+### Tooltip
+
+```jsx
+import Tooltip from './components/Tooltip';
+
+<Tooltip content="Helpful information" placement="top">
+  <Button>Hover me</Button>
+</Tooltip>
+
+<Tooltip content="Quick tip" variant="minimal">
+  <span>Hover for tip</span>
+</Tooltip>
+```
+
+### Icons
 
 ```jsx
 import { Icon } from './icons/SailIcons';
 
 <Icon name="home" size="small" fill="currentColor" />
+<Icon name="settings" size="medium" fill="#6366f1" />
 ```
+
+Available icons: `add`, `home`, `balance`, `arrowsLoop`, `person`, `product`, `platform`, `chevronDown`, `wallet`, `invoice`, `barChart`, `more`, `search`, `notifications`, `settings`
 
 Sizes: `xxsmall` (8px), `xsmall` (12px), `small` (16px), `medium` (20px), `large` (32px)
 
-## Examples
+## CSS Variables
 
-The app includes three example routes:
-- `/` - Basic dashboard with default settings
-- `/customized` - Dashboard with custom props
-- `/advanced` - Fully customized sidebar with expandable sections
+All colors use CSS variables for easy theming. Edit `src/index.css` to customize:
+
+```css
+:root {
+  /* Backgrounds */
+  --bg: #ffffff;
+  --bg-secondary: #f9fafb;
+  --bg-offset: #F5F6F8;
+  --bg-hover: #f9fafb;
+
+  /* Text */
+  --text-primary: #010101;
+  --text-secondary: #4b5563;
+  --text-muted: #9ca3af;
+
+  /* Borders */
+  --border: #e5e7eb;
+
+  /* Badges */
+  --badge-success-bg: #EAFCDD;
+  --badge-success-text: #217005;
+  --badge-warning-bg: #FDF8C9;
+  --badge-warning-text: #B13600;
+  --badge-danger-bg: #FEF4F6;
+  --badge-danger-text: #C0123C;
+  --badge-info-bg: #E2FBFE;
+  --badge-info-text: #045AD0;
+  /* ... and more */
+}
+```
+
+### Dark Mode
+
+Add the `dark-mode` class to any parent element to enable dark theme:
+
+```jsx
+<div className="dark-mode">
+  {/* All children use dark mode colors */}
+</div>
+```
+
+## Adding New Pages
+
+1. Create a new file in `src/pages/`:
+
+```jsx
+// src/pages/MyPage.jsx
+export default function MyPage() {
+  return (
+    <div className="p-8">
+      <h1 className="text-2xl font-semibold">My Page</h1>
+    </div>
+  );
+}
+```
+
+2. Add route in `src/App.jsx`:
+
+```jsx
+import MyPage from './pages/MyPage';
+
+<Route path="/my-page" element={<MyPage />} />
+```
+
+3. Add navigation item in `src/components/PlatformLayout.jsx`:
+
+```jsx
+<NavItem
+  icon={<Icon name="product" size="small" fill="currentColor" />}
+  label="My Page"
+  to="/my-page"
+  active={isActive('/my-page')}
+/>
+```
+
+## Customizing the Sidebar
+
+Edit the `Sidebar` component in `src/components/PlatformLayout.jsx`:
+
+- Change the logo/branding in the header section
+- Add/remove navigation items
+- Modify the expandable "Connect" section or create new expandable sections
+
+## Scripts
+
+```bash
+npm run dev      # Start development server
+npm run build    # Production build
+npm run preview  # Preview production build
+npm run lint     # Run ESLint
+```
+
+## Tech Stack
+
+- React 19
+- Vite 7
+- Tailwind CSS 4
+- React Router 7
 
 ## License
 
