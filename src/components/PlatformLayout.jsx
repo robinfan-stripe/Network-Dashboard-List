@@ -47,15 +47,15 @@ export const SectionHeading = ({ label }) => (
   </div>
 );
 
-// Expandable nav item with sub-items
-const ExpandableNavItem = ({ icon, label, children, defaultExpanded = false }) => {
-  const [isExpanded, setIsExpanded] = React.useState(defaultExpanded);
+// Expandable nav item with sub-items (controlled via expandedSection prop)
+const ExpandableNavItem = ({ icon, label, children, sectionId, expandedSection, onToggle }) => {
+  const isExpanded = expandedSection === sectionId;
 
   return (
     <div>
       <div
         className="flex items-center space-x-2 h-[30px] px-1 rounded-md hover:bg-bg-hover cursor-pointer relative"
-        onClick={() => setIsExpanded(!isExpanded)}
+        onClick={() => onToggle(isExpanded ? null : sectionId)}
       >
         {icon && (
           <div className="w-6 h-6 flex items-center justify-center text-subdued">
@@ -67,23 +67,28 @@ const ExpandableNavItem = ({ icon, label, children, defaultExpanded = false }) =
           <Icon name="chevronDown" size="xxsmall" fill="currentColor" className={`w-[8px] h-[8px] transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
         </div>
       </div>
-      {isExpanded && (
-        <div className="pb-1">
-          {children}
+      <div
+        className={`grid transition-[grid-template-rows] duration-200 [transition-timing-function:cubic-bezier(0.4,0,0.2,1)] ${isExpanded ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}
+      >
+        <div className="overflow-hidden">
+          <div className="pb-1">
+            {children}
+          </div>
         </div>
-      )}
+      </div>
     </div>
   );
 };
 
-export const Sidebar = ({ highlightedItem = 'financialAccounts' }) => {
+export const Sidebar = () => {
   const location = useLocation();
+  const [expandedSection, setExpandedSection] = React.useState('connect');
 
   // Helper to check if current path matches
   const isActive = (path) => location.pathname === path;
 
   return (
-    <div className="left-0 top-0 w-[250px] bg-white border-r border-border flex flex-col h-screen z-10 shrink-0">
+    <div className="fixed left-0 top-0 w-sidebar-width bg-white border-r border-border flex flex-col h-screen z-10 shrink-0">
       {/* Account Section - Cloudbeds branding */}
       <div className="h-[60px] px-5 flex items-center border-border">
         <div className="flex items-center space-x-2">
@@ -109,7 +114,13 @@ export const Sidebar = ({ highlightedItem = 'financialAccounts' }) => {
         <div className="space-y-2">
           <SectionHeading label="Products" />
           <div className="">
-            <ExpandableNavItem icon={<Icon name="platform" size="small" fill="currentColor" />} label="Connect" defaultExpanded={true}>
+            <ExpandableNavItem
+              icon={<Icon name="platform" size="small" fill="currentColor" />}
+              label="Connect"
+              sectionId="connect"
+              expandedSection={expandedSection}
+              onToggle={setExpandedSection}
+            >
               <SubNavItem
                 label="Overview"
                 to="/connect"
@@ -128,9 +139,44 @@ export const Sidebar = ({ highlightedItem = 'financialAccounts' }) => {
               />
               <SubNavItem label="Capital" />
             </ExpandableNavItem>
-            <NavItem icon={<Icon name="wallet" size="small" fill="currentColor" />} label="Payments" to="/payments" active={isActive('/payments')} />
-            <NavItem icon={<Icon name="invoice" size="small" fill="currentColor" />} label="Billing" to="/billing" active={isActive('/billing')} />
-            <NavItem icon={<Icon name="barChart" size="small" fill="currentColor" />} label="Reporting" to="/reporting" active={isActive('/reporting')} />
+            <ExpandableNavItem
+              icon={<Icon name="wallet" size="small" fill="currentColor" />}
+              label="Payments"
+              sectionId="payments"
+              expandedSection={expandedSection}
+              onToggle={setExpandedSection}
+            >
+              <SubNavItem label="Analytics" />
+              <SubNavItem label="Disputes" />
+              <SubNavItem label="Radar" />
+              <SubNavItem label="Payment Links" />
+              <SubNavItem label="Terminal" />
+            </ExpandableNavItem>
+            <ExpandableNavItem
+              icon={<Icon name="invoice" size="small" fill="currentColor" />}
+              label="Billing"
+              sectionId="billing"
+              expandedSection={expandedSection}
+              onToggle={setExpandedSection}
+            >
+              <SubNavItem label="Overview" />
+              <SubNavItem label="Subscriptions" />
+              <SubNavItem label="Invoices" />
+              <SubNavItem label="Usage-based" />
+              <SubNavItem label="Revenue recovery" />
+            </ExpandableNavItem>
+            <ExpandableNavItem
+              icon={<Icon name="barChart" size="small" fill="currentColor" />}
+              label="Reporting"
+              sectionId="reporting"
+              expandedSection={expandedSection}
+              onToggle={setExpandedSection}
+            >
+              <SubNavItem label="Reports" />
+              <SubNavItem label="Sigma" />
+              <SubNavItem label="Revenue Recognition" />
+              <SubNavItem label="Data management" />
+            </ExpandableNavItem>
             <NavItem icon={<Icon name="more" size="small" fill="currentColor" />} label="More" />
           </div>
         </div>
@@ -139,8 +185,8 @@ export const Sidebar = ({ highlightedItem = 'financialAccounts' }) => {
   );
 };
 
-export const Header = ({ sticky = false, settingsHighlighted = false }) => (
-  <div className={`h-[60px] bg-white border-border px-6 flex items-center justify-between z-10 ${sticky ? 'sticky top-0 w-full' : 'fixed top-0 max-w-[1280px] w-[calc(100%-266px)]'}`}>
+export const Header = ({ settingsHighlighted = false }) => (
+  <div className="fixed top-0 left-sidebar-width right-0 h-[60px] bg-white border-border px-6 flex items-center justify-between z-10">
     {/* Search */}
     <div className="flex-1 max-w-[500px]">
       <div className="flex items-center space-x-2 px-3 py-2 bg-bg-hover rounded-lg transition-all hover:bg-bg-offset cursor-pointer">

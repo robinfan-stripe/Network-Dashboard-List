@@ -1,37 +1,62 @@
 import React from 'react';
 
-export const Toggle = ({
-  checked,
-  onChange,
-  label,
-  disabled = false,
-  className = '',
-  ...props
+/**
+ * A reusable toggle component for selecting options.
+ * Used in card type selection, payment method selection, etc.
+ */
+const Toggle = ({
+  icon: Icon,
+  title,
+  description,
+  selected = false,
+  onClick,
 }) => {
   return (
-    <label className={`flex items-center space-x-3 cursor-pointer ${disabled ? 'opacity-50 cursor-not-allowed' : ''} ${className}`}>
-      <div className="relative">
-        <input
-          type="checkbox"
-          checked={checked}
-          onChange={onChange}
-          disabled={disabled}
-          className="sr-only"
-          {...props}
-        />
-        <div
-          className={`block w-10 h-6 rounded-full transition-colors ${checked ? 'bg-indigo-600' : 'bg-gray-300'
-            }`}
-        />
-        <div
-          className={`absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform ${checked ? 'transform translate-x-4' : ''
-            }`}
-        />
+    <button
+      type="button"
+      onClick={onClick}
+      className={`w-full text-left rounded-lg transition-colors cursor-pointer ${selected
+        ? 'border-2 border-blurple p-[11px]'
+        : 'border border-border hover:bg-bg-hover p-[12px]'
+        }`}
+    >
+      <div className="flex items-start gap-2.5">
+        {Icon && (
+          <div className={`mt-0.5 flex-shrink-0 ${selected ? 'text-blurple' : 'text-icon-subdued'}`}>
+            <Icon size={16} />
+          </div>
+        )}
+        <div className="flex-1">
+          <div className={`text-sm font-medium ${selected ? 'text-blurple' : 'text-default'}`}>
+            {title}
+          </div>
+          {description && (
+            <div className="text-sm text-subdued">{description}</div>
+          )}
+        </div>
       </div>
+    </button>
+  );
+};
+
+/**
+ * A group wrapper for multiple toggles
+ * @param {string} layout - 'vertical' (default) or 'horizontal'
+ */
+export const ToggleGroup = ({ children, label, layout = 'vertical' }) => {
+  const layoutClass = layout === 'horizontal'
+    ? 'flex gap-2'
+    : 'space-y-2';
+
+  return (
+    <div>
       {label && (
-        <span className="text-sm font-medium text-default">{label}</span>
+        <label className="block text-sm font-medium mb-2 text-default">
+          {label}
+        </label>
       )}
-    </label>
+      <div className={layoutClass}>{children}</div>
+    </div>
   );
 };
 

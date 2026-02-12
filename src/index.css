@@ -1,6 +1,9 @@
 @import "tailwindcss";
 
 @theme {
+  /* Layout */
+  --spacing-sidebar-width: 250px;
+
   /* Typography */
   --text-xs: 12px;
   --text-sm: 14px;
@@ -46,6 +49,12 @@
   --color-button-secondary-text: #353A44;
   --color-button-secondary-pressed: #F5F6F8;
 
+  --color-button-danger-bg: #E61947;
+  --color-button-danger-border: #E61947;
+  --color-button-danger-border-hover: #9B0C36;
+  --color-button-danger-text: #FFFFFF;
+  --color-button-danger-pressed: #C0123C;
+
   /* Badge variants */
   --color-badge-default-bg: #F5F6F8;
   --color-badge-default-border: #F5F6F8;
@@ -62,7 +71,7 @@
   --color-badge-danger-bg: #FEF4F6;
   --color-badge-danger-border: #FEF4F6;
   --color-badge-danger-text: #C0123C;
-  
+
   --color-badge-info-bg: #E2FBFE;
   --color-badge-info-border: #E2FBFE;
   --color-badge-info-text: #045AD0;
@@ -124,4 +133,45 @@ body {
 
 .scrollbar-auto:hover::-webkit-scrollbar-thumb {
   background: rgba(0, 0, 0, 0.3);
+}
+
+/* Dialog animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes scaleOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
 }

@@ -21,8 +21,8 @@ const Tooltip = ({
   };
 
   const variantBaseClasses = {
-    default: 'px-3 py-2 text-xs w-[280px] text-left',
-    minimal: 'px-2 py-1 text-xs whitespace-nowrap bg-gray-800 text-white',
+    default: 'p-[12px] text-sm w-[300px] rounded-lg text-left',
+    minimal: 'px-2 py-1 text-sm whitespace-nowrap bg-gray-800 text-white',
   };
 
   const variantModeClasses = {

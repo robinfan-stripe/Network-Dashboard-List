@@ -3,24 +3,55 @@ import Badge from '../components/Badge';
 import Button from '../components/Button';
 import Input, { Select, Textarea } from '../components/Input';
 import Table from '../components/Table';
-import Toggle from '../components/Toggle';
-import ToggleCard, { ToggleCardGroup } from '../components/ToggleCard';
+import Switch from '../components/Switch';
+import Toggle, { ToggleGroup } from '../components/Toggle';
 import Tooltip from '../components/Tooltip';
+import Dialog from '../components/Dialog';
+import { Icon } from '../icons/SailIcons';
+
+// Reusable component section with side-by-side layout
+const ComponentSection = ({ title, children, code, onClose }) => (
+  <section>
+    <div className="flex items-center justify-between mb-4">
+      <h2 className="text-xl font-semibold text-default">{title}</h2>
+      {onClose && (
+        <button
+          onClick={onClose}
+          className="text-icon-subdued hover:text-icon-default transition-colors cursor-pointer"
+          aria-label="Close section"
+        >
+          <Icon name="close" size="small" fill="currentColor" />
+        </button>
+      )}
+    </div>
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="flex items-start">
+        <div className="w-full">{children}</div>
+      </div>
+      <div className="bg-gray-100 p-5 rounded-xl overflow-x-auto">
+        <pre className="text-xs text-gray-800 font-mono whitespace-pre">{code}</pre>
+      </div>
+    </div>
+  </section>
+);
 
 export default function Home() {
   const [inputValue, setInputValue] = useState('');
   const [selectValue, setSelectValue] = useState('option1');
   const [textareaValue, setTextareaValue] = useState('');
-  const [toggleChecked, setToggleChecked] = useState(false);
+  const [switchChecked, setSwitchChecked] = useState(false);
   const [selectedCard, setSelectedCard] = useState('card1');
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   // Sample data for table
   const tableColumns = [
     { key: 'name', header: 'Name', width: 'grow' },
     { key: 'email', header: 'Email' },
-    { key: 'status', header: 'Status', render: (item) => (
-      <Badge variant={item.status === 'Active' ? 'success' : 'default'}>{item.status}</Badge>
-    )},
+    {
+      key: 'status', header: 'Status', render: (item) => (
+        <Badge variant={item.status === 'Active' ? 'success' : 'default'}>{item.status}</Badge>
+      )
+    },
     { key: 'amount', header: 'Amount', align: 'right' },
   ];
 
@@ -37,9 +68,14 @@ export default function Home() {
         <p className="text-subdued">Edit <code className="bg-bg-offset px-2 py-1 rounded text-sm">src/pages/Home.jsx</code> to edit this page.</p>
       </div>
 
-      {/* Badges */}
-      <section>
-        <h2 className="text-lg font-semibold text-default mb-4">Badge</h2>
+      <ComponentSection
+        title="Badge"
+        code={`<Badge>Default</Badge>
+<Badge variant="success">Success</Badge>
+<Badge variant="warning">Warning</Badge>
+<Badge variant="danger">Danger</Badge>
+<Badge variant="info">Info</Badge>`}
+      >
         <div className="flex flex-wrap gap-2">
           <Badge>Default</Badge>
           <Badge variant="success">Success</Badge>
@@ -47,18 +83,18 @@ export default function Home() {
           <Badge variant="danger">Danger</Badge>
           <Badge variant="info">Info</Badge>
         </div>
-        <pre className="mt-3 p-3 bg-bg-offset rounded text-xs overflow-x-auto">
-{`<Badge>Default</Badge>
-<Badge variant="success">Success</Badge>
-<Badge variant="warning">Warning</Badge>
-<Badge variant="danger">Danger</Badge>
-<Badge variant="info">Info</Badge>`}
-        </pre>
-      </section>
+      </ComponentSection>
 
-      {/* Buttons */}
-      <section>
-        <h2 className="text-lg font-semibold text-default mb-4">Button</h2>
+      <ComponentSection
+        title="Button"
+        code={`<Button>Primary</Button>
+<Button variant="secondary">Secondary</Button>
+<Button variant="danger">Danger</Button>
+<Button disabled>Disabled</Button>
+<Button icon="add">With Icon</Button>
+<Button size="sm">Small</Button>
+<Button size="lg">Large</Button>`}
+      >
         <div className="flex flex-wrap gap-3">
           <Button>Primary</Button>
           <Button variant="secondary">Secondary</Button>
@@ -68,164 +104,184 @@ export default function Home() {
           <Button size="sm">Small</Button>
           <Button size="lg">Large</Button>
         </div>
-        <pre className="mt-3 p-3 bg-bg-offset rounded text-xs overflow-x-auto">
-{`<Button>Primary</Button>
-<Button variant="secondary">Secondary</Button>
-<Button variant="danger">Danger</Button>
-<Button disabled>Disabled</Button>
-<Button icon="add">With Icon</Button>
-<Button size="sm">Small</Button>
-<Button size="lg">Large</Button>`}
-        </pre>
-      </section>
+      </ComponentSection>
 
-      {/* Input */}
-      <section>
-        <h2 className="text-lg font-semibold text-default mb-4">Input</h2>
-        <div className="max-w-md space-y-4">
+      <ComponentSection
+        title="Input"
+        code={`<Input
+  label="Email address"
+  description="We'll use this for notifications"
+  placeholder="you@example.com"
+  value={value}
+  onChange={(e) => setValue(e.target.value)}
+/>
+<Input label="Price" prefix="$" ... />
+<Input error errorMessage="Already taken" ... />`}
+      >
+        <div className="space-y-4 max-w-sm">
           <Input
-            placeholder="Basic input"
+            label="Email address"
+            description="We'll use this for account notifications"
+            placeholder="you@example.com"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
           />
           <Input
-            placeholder="With prefix"
+            label="Price"
+            placeholder="0.00"
             prefix="$"
             value=""
-            onChange={() => {}}
+            onChange={() => { }}
           />
           <Input
-            placeholder="With suffix"
-            suffix="USD"
-            value=""
-            onChange={() => {}}
-          />
-          <Input
-            placeholder="With error"
+            label="Username"
+            placeholder="Choose a username"
             error
-            errorMessage="This field is required"
+            errorMessage="This username is already taken"
             value=""
-            onChange={() => {}}
-          />
-          <Input
-            placeholder="Disabled"
-            disabled
-            value=""
-            onChange={() => {}}
+            onChange={() => { }}
           />
         </div>
-        <pre className="mt-3 p-3 bg-bg-offset rounded text-xs overflow-x-auto">
-{`<Input placeholder="Basic input" value={value} onChange={...} />
-<Input placeholder="With prefix" prefix="$" />
-<Input placeholder="With suffix" suffix="USD" />
-<Input placeholder="With error" error errorMessage="This field is required" />
-<Input placeholder="Disabled" disabled />`}
-        </pre>
-      </section>
+      </ComponentSection>
 
-      {/* Select */}
-      <section>
-        <h2 className="text-lg font-semibold text-default mb-4">Select</h2>
-        <div className="max-w-md">
-          <Select value={selectValue} onChange={(e) => setSelectValue(e.target.value)}>
-            <option value="option1">Option 1</option>
-            <option value="option2">Option 2</option>
-            <option value="option3">Option 3</option>
+      <ComponentSection
+        title="Select"
+        code={`<Select
+  label="Country"
+  description="Select your billing country"
+  value={value}
+  onChange={(e) => setValue(e.target.value)}
+>
+  <option value="us">United States</option>
+</Select>
+
+// Sizes: sm, md (default), lg
+<Select size="sm">...</Select>
+<Select size="lg">...</Select>`}
+      >
+        <div className="space-y-4 max-w-sm">
+          <Select
+            label="Country"
+            description="Select your billing country"
+            value={selectValue}
+            onChange={(e) => setSelectValue(e.target.value)}
+          >
+            <option value="option1">United States</option>
+            <option value="option2">Canada</option>
+            <option value="option3">United Kingdom</option>
           </Select>
+          <div className="flex flex-wrap items-center gap-3">
+            <Select size="sm" value={selectValue} onChange={(e) => setSelectValue(e.target.value)}>
+              <option value="option1">Small</option>
+              <option value="option2">Option 2</option>
+            </Select>
+            <Select value={selectValue} onChange={(e) => setSelectValue(e.target.value)}>
+              <option value="option1">Medium</option>
+              <option value="option2">Option 2</option>
+            </Select>
+            <Select size="lg" value={selectValue} onChange={(e) => setSelectValue(e.target.value)}>
+              <option value="option1">Large</option>
+              <option value="option2">Option 2</option>
+            </Select>
+          </div>
         </div>
-        <pre className="mt-3 p-3 bg-bg-offset rounded text-xs overflow-x-auto">
-{`<Select value={value} onChange={...}>
-  <option value="option1">Option 1</option>
-  <option value="option2">Option 2</option>
-</Select>`}
-        </pre>
-      </section>
+      </ComponentSection>
 
-      {/* Textarea */}
-      <section>
-        <h2 className="text-lg font-semibold text-default mb-4">Textarea</h2>
-        <div className="max-w-md">
+      <ComponentSection
+        title="Textarea"
+        code={`<Textarea
+  label="Message"
+  description="Describe your issue in detail"
+  placeholder="Enter your message..."
+  rows={3}
+  value={value}
+  onChange={(e) => setValue(e.target.value)}
+/>`}
+      >
+        <div className="max-w-sm">
           <Textarea
+            label="Message"
+            description="Describe your issue in detail"
             placeholder="Enter your message..."
             rows={3}
             value={textareaValue}
             onChange={(e) => setTextareaValue(e.target.value)}
           />
         </div>
-        <pre className="mt-3 p-3 bg-bg-offset rounded text-xs overflow-x-auto">
-{`<Textarea placeholder="Enter your message..." rows={3} value={value} onChange={...} />`}
-        </pre>
-      </section>
+      </ComponentSection>
 
-      {/* Toggle */}
-      <section>
-        <h2 className="text-lg font-semibold text-default mb-4">Toggle</h2>
-        <div className="space-y-3">
-          <Toggle
-            checked={toggleChecked}
-            onChange={(e) => setToggleChecked(e.target.checked)}
+      <ComponentSection
+        title="Switch"
+        code={`<Switch
+  checked={checked}
+  onChange={(e) => setChecked(e.target.checked)}
+  label="Enable notifications"
+  description="Receive emails about activity"
+/>
+<Switch disabled label="Disabled" />`}
+      >
+        <div className="flex flex-col space-y-8">
+          <Switch
+            checked={switchChecked}
+            onChange={(e) => setSwitchChecked(e.target.checked)}
             label="Enable notifications"
+            description="Receive emails about account activity"
           />
-          <Toggle
-            checked={true}
-            onChange={() => {}}
-            label="Always on"
-          />
-          <Toggle
+          <Switch
             checked={false}
-            onChange={() => {}}
+            onChange={() => { }}
             disabled
-            label="Disabled toggle"
+            label="Disabled switch"
           />
         </div>
-        <pre className="mt-3 p-3 bg-bg-offset rounded text-xs overflow-x-auto">
-{`<Toggle checked={checked} onChange={...} label="Enable notifications" />
-<Toggle checked={true} label="Always on" />
-<Toggle checked={false} disabled label="Disabled toggle" />`}
-        </pre>
-      </section>
+      </ComponentSection>
 
-      {/* ToggleCard */}
-      <section>
-        <h2 className="text-lg font-semibold text-default mb-4">ToggleCard</h2>
-        <div className="max-w-md">
-          <ToggleCardGroup label="Select an option">
-            <ToggleCard
+      <ComponentSection
+        title="Toggle"
+        code={`<ToggleGroup label="Select an option">
+  <Toggle
+    title="Option A"
+    description="This is the first option"
+    selected={selected === 'a'}
+    onClick={() => setSelected('a')}
+  />
+  <Toggle
+    title="Option B"
+    description="This is the second option"
+    selected={selected === 'b'}
+    onClick={() => setSelected('b')}
+  />
+</ToggleGroup>`}
+      >
+        <div className="max-w-sm">
+          <ToggleGroup label="Select an option">
+            <Toggle
               title="Option A"
               description="This is the first option"
               selected={selectedCard === 'card1'}
               onClick={() => setSelectedCard('card1')}
             />
-            <ToggleCard
+            <Toggle
               title="Option B"
               description="This is the second option"
               selected={selectedCard === 'card2'}
               onClick={() => setSelectedCard('card2')}
             />
-          </ToggleCardGroup>
+          </ToggleGroup>
         </div>
-        <pre className="mt-3 p-3 bg-bg-offset rounded text-xs overflow-x-auto">
-{`<ToggleCardGroup label="Select an option">
-  <ToggleCard
-    title="Option A"
-    description="This is the first option"
-    selected={selected === 'card1'}
-    onClick={() => setSelected('card1')}
-  />
-  <ToggleCard
-    title="Option B"
-    description="This is the second option"
-    selected={selected === 'card2'}
-    onClick={() => setSelected('card2')}
-  />
-</ToggleCardGroup>`}
-        </pre>
-      </section>
+      </ComponentSection>
 
-      {/* Tooltip */}
-      <section>
-        <h2 className="text-lg font-semibold text-default mb-4">Tooltip</h2>
-        <div className="flex flex-wrap gap-6">
+      <ComponentSection
+        title="Tooltip"
+        code={`<Tooltip content="Tooltip text" placement="top">
+  <Button>Hover me</Button>
+</Tooltip>
+
+// Placements: top, bottom
+// Variants: default, minimal
+<Tooltip variant="minimal" ...>`}
+      >
+        <div className="flex flex-wrap gap-4">
           <Tooltip content="This is a tooltip on top" placement="top">
             <Button variant="secondary">Hover me (top)</Button>
           </Tooltip>
@@ -236,42 +292,36 @@ export default function Home() {
             <Button variant="secondary">Minimal tooltip</Button>
           </Tooltip>
         </div>
-        <pre className="mt-3 p-3 bg-bg-offset rounded text-xs overflow-x-auto">
-{`<Tooltip content="This is a tooltip" placement="top">
-  <Button>Hover me</Button>
-</Tooltip>
-<Tooltip content="Minimal style" variant="minimal">
-  <Button>Minimal tooltip</Button>
-</Tooltip>`}
-        </pre>
-      </section>
+      </ComponentSection>
 
-      {/* Table */}
-      <section>
-        <h2 className="text-lg font-semibold text-default mb-4">Table</h2>
-        <Table
-          columns={tableColumns}
-          data={tableData}
-          onRowClick={(item) => alert(`Clicked: ${item.name}`)}
-          mobileRow={(item, onClick) => (
-            <div
-              className="p-4 border-b border-border hover:bg-bg-hover cursor-pointer"
-              onClick={onClick}
-            >
-              <div className="font-medium">{item.name}</div>
-              <div className="text-sm text-subdued">{item.email}</div>
-              <div className="flex justify-between mt-2">
-                <Badge variant={item.status === 'Active' ? 'success' : 'default'}>{item.status}</Badge>
-                <span className="font-medium">{item.amount}</span>
-              </div>
-            </div>
-          )}
-        />
-        <pre className="mt-3 p-3 bg-bg-offset rounded text-xs overflow-x-auto">
-{`const columns = [
+      <ComponentSection
+        title="Dialog"
+        code={`<Dialog
+  open={dialogOpen}
+  onClose={() => setDialogOpen(false)}
+  title="Dialog Title"
+  subtitle="Optional subtitle text"
+  size="medium" // small | medium | large | xlarge | full
+  footer={
+    <div className="flex justify-end gap-2">
+      <Button variant="secondary">Cancel</Button>
+      <Button>Confirm</Button>
+    </div>
+  }
+>
+  Dialog content goes here
+</Dialog>`}
+      >
+        <Button onClick={() => setDialogOpen(true)}>Open Dialog</Button>
+      </ComponentSection>
+
+      <ComponentSection
+        title="Table"
+        code={`const columns = [
   { key: 'name', header: 'Name', width: 'grow' },
   { key: 'email', header: 'Email' },
-  { key: 'status', header: 'Status', render: (item) => <Badge>{item.status}</Badge> },
+  { key: 'status', header: 'Status',
+    render: (item) => <Badge>{item.status}</Badge> },
   { key: 'amount', header: 'Amount', align: 'right' },
 ];
 
@@ -279,12 +329,33 @@ export default function Home() {
   columns={columns}
   data={data}
   onRowClick={(item) => console.log(item)}
-  mobileRow={(item, onClick) => (
-    <div onClick={onClick}>...</div>
-  )}
 />`}
-        </pre>
-      </section>
+      >
+        <Table
+          columns={tableColumns}
+          data={tableData}
+          onRowClick={(item) => alert(`Clicked: ${item.name}`)}
+        />
+      </ComponentSection>
+
+      {/* Dialog instance */}
+      <Dialog
+        open={dialogOpen}
+        onClose={() => setDialogOpen(false)}
+        title="Confirm Action"
+        subtitle="This action cannot be undone."
+        size="medium"
+        footer={
+          <div className="flex justify-end gap-2">
+            <Button variant="secondary" onClick={() => setDialogOpen(false)}>Cancel</Button>
+            <Button onClick={() => setDialogOpen(false)}>Confirm</Button>
+          </div>
+        }
+      >
+        <p className="text-sm text-subdued">
+          Are you sure you want to proceed? This will permanently delete the selected items.
+        </p>
+      </Dialog>
     </div>
   );
 }
