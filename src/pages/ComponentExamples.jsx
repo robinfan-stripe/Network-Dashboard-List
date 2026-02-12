@@ -7,6 +7,7 @@ import Switch from '../components/Switch';
 import Toggle, { ToggleGroup } from '../components/Toggle';
 import Tooltip from '../components/Tooltip';
 import Dialog from '../components/Dialog';
+import { Icon } from '../icons/SailIcons';
 
 // Reusable component section with code dialog
 const ComponentSection = ({ title, children, code }) => {
@@ -18,12 +19,13 @@ const ComponentSection = ({ title, children, code }) => {
         <h2 className="text-xl font-semibold text-default">{title}</h2>
         <button
           onClick={() => setShowCode(true)}
-          className="text-sm text-brand hover:text-button-primary-pressed transition-colors cursor-pointer"
+          className="text-sm text-brand hover:text-button-primary-pressed transition-colors cursor-pointer flex items-center gap-1"
         >
+          <Icon name="api" size="xsmall" />
           View code
         </button>
       </div>
-      <div className="bg-bg-offset/50 flex p-12 rounded-xl border border-border items-center justify-center">
+      <div className="bg-offset/50 flex p-12 rounded-xl border border-border items-center justify-center">
         {children}
       </div>
       <Dialog
@@ -411,11 +413,13 @@ export default function ComponentExamples() {
   onRowClick={(item) => console.log(item)}
 />`}
       >
-        <Table
-          columns={tableColumns}
-          data={tableData}
-          onRowClick={(item) => alert(`Clicked: ${item.name}`)}
-        />
+        <div className="w-full">
+          <Table
+            columns={tableColumns}
+            data={tableData}
+            onRowClick={(item) => alert(`Clicked: ${item.name}`)}
+          />
+        </div>
       </ComponentSection>
 
       {/* Dialog instance */}

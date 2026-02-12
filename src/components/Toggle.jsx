@@ -17,7 +17,7 @@ const Toggle = ({
       onClick={onClick}
       className={`w-full text-left rounded-lg transition-colors cursor-pointer ${selected
         ? 'border-2 border-blurple p-[11px]'
-        : 'border border-border hover:bg-bg-hover p-[12px]'
+        : 'border border-border hover:bg-offset p-[12px]'
         }`}
     >
       <div className="flex items-start gap-2.5">

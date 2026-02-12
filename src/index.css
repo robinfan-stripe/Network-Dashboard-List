@@ -11,9 +11,8 @@
 
   /* Colors - use as bg-primary, text-primary, border-primary, etc. */
   --color-blurple: #635BFF;
-  --color-bg: #ffffff;
-  --color-bg-offset: #F5F6F8;
-  --color-bg-hover: #f9fafb;
+  --color-surface: #ffffff;
+  --color-offset: #F5F6F8;
   --color-border: #D8DEE4;
   --color-danger: #dc2626;
   --color-overlay-backdrop: rgba(0, 0, 0, 0.3);

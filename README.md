@@ -17,8 +17,8 @@ Visit `http://localhost:5173` to see the dashboard with component examples.
 
 ## Features
 
-- **Stripe-style layout** - 250px sidebar + 60px header + scrollable content area
-- **Pre-built components** - Badge, Button, Input, Select, Table, Toggle, Tooltip, and more
+- **Components** - Badge, Button, Dialog, Input, Select, Switch, Table, Toggle, Tooltip
+- **Semantic color tokens** - Consistent theming with `bg-surface`, `bg-offset`, `text-default`, etc.
 - **Routing ready** - React Router setup with individual page files
 
 ## Project Structure
@@ -29,21 +29,21 @@ src/
 │   ├── PlatformLayout.jsx   # Sidebar, Header, NavItem, SubNavItem
 │   ├── Badge.jsx            # Status badges
 │   ├── Button.jsx           # Primary, secondary, danger buttons
-│   ├── Input.jsx            # Input, Select, Textarea
-│   ├── Table.jsx            # Responsive table with mobile view
-│   ├── Toggle.jsx           # Switch toggle
-│   ├── ToggleCard.jsx       # Selectable cards
+│   ├── Dialog.jsx           # Modal dialogs
+│   ├── Input.jsx            # Input, Select, Textarea, Checkbox, Radio
+│   ├── Switch.jsx           # Toggle switches
+│   ├── Table.jsx            # Data tables
+│   ├── Toggle.jsx           # Selectable toggle cards
 │   └── Tooltip.jsx          # Hover tooltips
 ├── icons/
 │   └── SailIcons.jsx        # SVG icon system
 ├── pages/                   # One file per route
 │   ├── Home.jsx
 │   ├── Balances.jsx
-│   ├── Transactions.jsx
 │   └── ...
 ├── App.jsx                  # Main layout + routes
 ├── main.jsx                 # Entry point
-└── index.css                # Tailwind + CSS variables
+└── index.css                # Tailwind theme + custom CSS
 ```
 
 ### Icons
@@ -59,33 +59,35 @@ Sizes: `xxsmall` (8px), `xsmall` (12px), `small` (16px), `medium` (20px), `large
 
 ## Theming
 
-All colors are defined as Tailwind theme variables in `src/index.css`. This lets you use them as standard utility classes:
+All colors are defined as Tailwind CSS 4 theme variables in `src/index.css`. Use them as standard utility classes:
 
-```css
-@theme {
-  /* Colors - use as bg-primary, text-primary, border-border, etc. */
-  --color-primary: #635BFF;
-  --color-bg: #ffffff;
-  --color-bg-hover: #f9fafb;
-  --color-text-primary: #010101;
-  --color-text-secondary: #4b5563;
-  --color-border: #D8DEE4;
+### Color Tokens
 
-  /* Badge variants */
-  --color-badge-success-bg: #EAFCDD;
-  --color-badge-success-text: #217005;
-  /* ... and more */
-}
-```
+| Token | Class | Value | Usage |
+|-------|-------|-------|-------|
+| `--color-surface` | `bg-surface` | #ffffff | Page background |
+| `--color-offset` | `bg-offset` | #F5F6F8 | Offset sections, hover states |
+| `--color-blurple` | `bg-blurple` | #635BFF | Brand purple |
+| `--color-border` | `border-border` | #D8DEE4 | Standard borders |
+| `--color-default` | `text-default` | #353A44 | Primary text |
+| `--color-subdued` | `text-subdued` | #596171 | Secondary text |
+| `--color-brand` | `text-brand` | #533AFD | Brand text |
 
 ### Usage
 
 ```jsx
-{/* Use theme colors as Tailwind utilities */}
-<div className="bg-primary text-white">Primary button</div>
-<div className="border border-border">Bordered element</div>
-<div className="text-text-secondary">Secondary text</div>
-<div className="hover:bg-bg-hover">Hoverable row</div>
+{/* Background colors */}
+<div className="bg-surface">White background</div>
+<div className="bg-offset">Gray offset background</div>
+<div className="hover:bg-offset">Hover state</div>
+
+{/* Text colors */}
+<p className="text-default">Primary text</p>
+<p className="text-subdued">Secondary text</p>
+<p className="text-brand">Brand colored text</p>
+
+{/* Borders */}
+<div className="border border-border">Standard border</div>
 ```
 
 ## Adding New Pages

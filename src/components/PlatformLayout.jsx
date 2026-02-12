@@ -5,7 +5,7 @@ import { Icon } from '../icons/SailIcons';
 export const NavItem = ({ icon, label, active, highlighted, to }) => {
   const isHighlighted = active || highlighted;
   const content = (
-    <div className="flex items-center space-x-2 h-[30px] px-1 rounded-md cursor-pointer hover:bg-bg-hover">
+    <div className="flex items-center space-x-2 h-[30px] px-1 rounded-md cursor-pointer hover:bg-offset">
       {icon && (
         <div className={`w-6 h-6 flex items-center justify-center ${isHighlighted ? 'text-brand' : 'text-subdued'}`}>
           {icon}
@@ -54,7 +54,7 @@ const ExpandableNavItem = ({ icon, label, children, sectionId, expandedSection, 
   return (
     <div>
       <div
-        className="flex items-center space-x-2 h-[30px] px-1 rounded-md hover:bg-bg-hover cursor-pointer relative"
+        className="flex items-center space-x-2 h-[30px] px-1 rounded-md hover:bg-offset cursor-pointer relative"
         onClick={() => onToggle(isExpanded ? null : sectionId)}
       >
         {icon && (
@@ -186,25 +186,32 @@ export const Sidebar = () => {
 };
 
 export const Header = ({ settingsHighlighted = false }) => (
-  <div className="fixed top-0 left-sidebar-width right-0 h-[60px] bg-white border-border px-6 flex items-center justify-between z-10">
-    {/* Search */}
-    <div className="flex-1 max-w-[500px]">
-      <div className="flex items-center space-x-2 px-3 py-2 bg-bg-hover rounded-lg transition-all hover:bg-bg-offset cursor-pointer">
-        <Icon name="search" size="small" fill="currentColor" />
-        <span className="text-sm text-subdued">Search</span>
+  <div className="fixed top-0 left-sidebar-width right-0 h-[60px] bg-white border-border z-10">
+    <div className="max-w-[1280px] w-full h-full mx-auto px-8 flex items-center justify-between">
+      {/* Search */}
+      <div className="flex-1 max-w-[500px]">
+        <div className="flex items-center space-x-2 px-3 py-2 bg-offset rounded-lg transition-all hover:bg-offset cursor-pointer">
+          <Icon name="search" size="small" fill="currentColor" />
+          <span className="text-sm text-subdued">Search</span>
+        </div>
       </div>
-    </div>
 
-    {/* Actions */}
-    <div className="flex items-center space-x-6">
-      <span className="text-sm font-semibold">Developers</span>
-      <span className="text-sm font-semibold">Sandboxes</span>
-      <div className="flex items-center space-x-4">
-        <Icon name="notifications" size="small" fill="currentColor" />
-        <Icon name="settings" size="small" fill="currentColor" />
-        <button className="w-6 h-6 bg-indigo-600 rounded-full flex items-center justify-center text-white text-xs">
-          <Icon name="add" size="xsmall" fill="#FFFFFF" />
-        </button>
+      {/* Actions */}
+      <div className="flex items-center space-x-6">
+        <div className="flex items-center space-x-2">
+          <button className="w-8 h-8 rounded-full flex items-center justify-center text-icon-default hover:bg-offset transition-colors cursor-pointer">
+            <Icon name="apps" size="small" fill="currentColor" />
+          </button>
+          <button className="w-8 h-8 rounded-full flex items-center justify-center text-icon-default hover:bg-offset transition-colors cursor-pointer">
+            <Icon name="notifications" size="small" fill="currentColor" />
+          </button>
+          <button className="w-8 h-8 rounded-full flex items-center justify-center text-icon-default hover:bg-offset transition-colors cursor-pointer">
+            <Icon name="settings" size="small" fill="currentColor" />
+          </button>
+          <button className="w-8 h-8 rounded-full flex items-center justify-center text-brand hover:bg-offset transition-colors cursor-pointer">
+            <Icon name="addCircleFilled" size="medium" fill="currentColor" />
+          </button>
+        </div>
       </div>
     </div>
   </div>

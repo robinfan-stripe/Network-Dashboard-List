@@ -81,7 +81,7 @@ const Dialog = ({
         {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 size-7 flex items-center justify-center rounded text-icon-subdued hover:bg-bg-offset transition-colors cursor-pointer"
+          className="absolute top-4 right-4 size-7 flex items-center justify-center rounded text-icon-subdued hover:bg-offset transition-colors cursor-pointer"
           aria-label="Close"
         >
           <Icon name="cancel" size="xxsmall" fill="currentColor" />

@@ -1,7 +1,5 @@
-import React from 'react';
-
 /**
- * Generic Table component with desktop/mobile responsive views
+ * Generic Table component
  *
  * @param {Object} props
  * @param {Array} props.columns - Column definitions
@@ -13,7 +11,6 @@ import React from 'react';
  *   - paddingX: string - Override horizontal padding for this column (e.g., 'px-2')
  * @param {Array} props.data - Array of data items to display
  * @param {Function} props.onRowClick - Click handler for rows (optional)
- * @param {Function} props.mobileRow - Render function for mobile rows: (item, onClick, index) => ReactNode
  * @param {boolean} props.isLoading - Show loading spinner
  * @param {string} props.rowKey - Property to use as React key (default: 'id')
  * @param {string} props.cellPaddingX - Default horizontal padding for cells (default: 'px-4')
@@ -25,7 +22,6 @@ const Table = ({
   columns = [],
   data = [],
   onRowClick,
-  mobileRow,
   isLoading = false,
   rowKey = 'id',
   cellPaddingX = 'px-4',
@@ -79,9 +75,9 @@ const Table = ({
   );
 
   return (
-    <div className="@container">
-      {/* Desktop Table - hidden when container < 500px */}
-      <div className="hidden @[500px]:block rounded-lg overflow-hidden">
+    <div>
+      {/* Table */}
+      <div className="rounded-lg overflow-hidden">
         {/* Show table with headers only when data exists, otherwise show empty/loading state */}
         {isDataEmpty ? (
           <div className={isLoading ? "py-24 text-center" : ""}>
@@ -112,7 +108,7 @@ const Table = ({
                 data.map((item, rowIndex) => (
                   <tr
                     key={item[rowKey] ?? rowIndex}
-                    className={`border-b text-sm border-border hover:bg-bg-hover transition-colors duration-100 ${onRowClick ? 'cursor-pointer' : ''}`}
+                    className={`border-b text-sm border-border hover:bg-offset transition-colors duration-100 ${onRowClick ? 'cursor-pointer' : ''}`}
                     onClick={() => onRowClick?.(item, rowIndex)}
                   >
                     {columns.map((column, colIndex) => (
@@ -128,25 +124,6 @@ const Table = ({
               )}
             </tbody>
           </table>
-        )}
-      </div>
-
-      {/* Mobile List - shown when container < 500px */}
-      <div className="block @[500px]:hidden">
-        {isLoading ? (
-          <div className="py-16 text-center">
-            <LoadingSpinner />
-          </div>
-        ) : isDataEmpty ? (
-          <EmptyStateContent />
-        ) : (
-          <div>
-            {data.map((item, index) => (
-              <React.Fragment key={item[rowKey] ?? index}>
-                {mobileRow?.(item, () => onRowClick?.(item, index), index)}
-              </React.Fragment>
-            ))}
-          </div>
         )}
       </div>
     </div>
