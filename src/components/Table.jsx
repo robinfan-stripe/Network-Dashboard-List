@@ -54,7 +54,7 @@ const Table = ({
   // Loading spinner
   const LoadingSpinner = () => (
     <div className="flex items-center justify-center">
-      <div className="w-6 h-6 border-2 rounded-full animate-spin border-border border-t-gray-600" />
+      <div className="w-6 h-6 border-2 rounded-full animate-spin border-border border-border" />
     </div>
   );
 
@@ -108,7 +108,7 @@ const Table = ({
                 data.map((item, rowIndex) => (
                   <tr
                     key={item[rowKey] ?? rowIndex}
-                    className={`border-b text-sm border-border hover:bg-offset transition-colors duration-100 ${onRowClick ? 'cursor-pointer' : ''}`}
+                    className={`border-b text-sm text-subdued border-border hover:bg-offset transition-colors duration-100 ${onRowClick ? 'cursor-pointer' : ''}`}
                     onClick={() => onRowClick?.(item, rowIndex)}
                   >
                     {columns.map((column, colIndex) => (

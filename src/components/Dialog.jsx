@@ -10,16 +10,17 @@ const Dialog = ({
   size = 'medium',
   children,
   className = '',
+  overlayClassName = '',
 }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
 
   const sizes = {
-    small: 'max-w-sm',
-    medium: 'max-w-md',
-    large: 'max-w-lg',
-    xlarge: 'max-w-2xl',
-    full: 'max-w-[calc(100vw-32px)] max-h-[calc(100vh-32px)]',
+    small: 'max-w-[368px]',
+    medium: 'max-w-[496px]',
+    large: 'max-w-[648px]',
+    xlarge: 'max-w-[944px]',
+    full: 'w-[calc(100vw-32px)] h-[calc(100vh-32px)]',
   };
 
   // Handle open/close state with animation
@@ -65,7 +66,7 @@ const Dialog = ({
   const hasHeader = title || subtitle;
 
   return (
-    <div className={`fixed inset-0 z-50 flex items-center justify-center ${isClosing ? 'animate-[fadeOut_150ms_ease-in_forwards]' : 'animate-[fadeIn_150ms_ease-out]'}`}>
+    <div className={`fixed inset-0 z-50 flex items-center justify-center ${isClosing ? 'animate-[fadeOut_150ms_ease-in_forwards]' : 'animate-[fadeIn_150ms_ease-out]'} ${overlayClassName}`}>
       {/* Backdrop */}
       <div
         className="absolute inset-0 bg-overlay-backdrop"
@@ -74,7 +75,7 @@ const Dialog = ({
 
       {/* Dialog */}
       <div
-        className={`relative bg-white rounded-lg shadow-xl w-full ${isClosing ? 'animate-[scaleOut_150ms_ease-in_forwards]' : 'animate-[scaleIn_150ms_ease-out]'} ${sizes[size]} ${className}`}
+        className={`relative bg-surface rounded-lg shadow-xl ${size !== 'full' ? 'w-full' : ''} ${isClosing ? 'animate-[scaleOut_150ms_ease-in_forwards]' : 'animate-[scaleIn_150ms_ease-out]'} ${sizes[size]} ${className}`}
         role="dialog"
         aria-modal="true"
       >

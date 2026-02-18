@@ -40,8 +40,8 @@ export const SubNavItem = ({ label, active, highlighted, onClick, to }) => {
 };
 
 export const SectionHeading = ({ label }) => (
-  <div className="h-[26px] flex items-center">
-    <span className="text-xs text-subdued uppercase tracking-wider">
+  <div className="h-[26px] px-1 flex items-center">
+    <span className="text-xs text-subdued">
       {label}
     </span>
   </div>
@@ -64,7 +64,7 @@ const ExpandableNavItem = ({ icon, label, children, sectionId, expandedSection, 
         )}
         <span className="text-sm text-default flex-1">{label}</span>
         <div className="w-6 h-6 flex items-center justify-center">
-          <Icon name="chevronDown" size="xxsmall" fill="currentColor" className={`w-[8px] h-[8px] transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
+          <Icon name="chevronDown" size="xxsmall" fill="currentColor" className={`w-[8px] h-[8px] transition-transform text-icon-default ${isExpanded ? 'rotate-180' : ''}`} />
         </div>
       </div>
       <div
@@ -88,19 +88,19 @@ export const Sidebar = () => {
   const isActive = (path) => location.pathname === path;
 
   return (
-    <div className="fixed left-0 top-0 w-sidebar-width bg-white border-r border-border flex flex-col h-screen z-10 shrink-0">
-      {/* Account Section - Cloudbeds branding */}
-      <div className="h-[60px] px-5 flex items-center border-border">
-        <div className="flex items-center space-x-2">
-          <img src="/cloudbeds-icon.png" alt="Cloudbeds" className="w-6 h-6 rounded" />
-          <span className="font-semibold text-default text-sm">
-            Cloudbeds
-          </span>
-        </div>
-      </div>
+    <div className="fixed left-0 top-0 w-sidebar-width bg-surface border-r border-border flex flex-col h-screen z-10 shrink-0">
 
       {/* Navigation */}
-      <div className="flex-1 px-5 py-5 space-y-7">
+      <div className="flex-1 px-4 py-4 space-y-7">
+
+        {/* Account Section - Rocket Rides branding */}
+        <div className="p-1.5 -mx-0.5 rounded-lg flex items-center border-border hover:bg-offset gap-2 duration-100">
+          <img src="/rocketrides.svg" alt="Rocket Rides" className="size-[24px] rounded" />
+          <span className="font-semibold text-default text-sm">
+            Rocket Rides
+          </span>
+        </div>
+
         {/* Main Navigation */}
         <div className="">
           <NavItem icon={<Icon name="home" size="small" fill="currentColor" />} label="Home" to="/" active={isActive('/')} />
@@ -186,12 +186,12 @@ export const Sidebar = () => {
 };
 
 export const Header = ({ settingsHighlighted = false }) => (
-  <div className="fixed top-0 left-sidebar-width right-0 h-[60px] bg-white border-border z-10">
+  <div className="fixed top-0 left-sidebar-width right-0 h-[60px] bg-surface border-border z-10">
     <div className="max-w-[1280px] w-full h-full mx-auto px-8 flex items-center justify-between">
       {/* Search */}
       <div className="flex-1 max-w-[500px]">
         <div className="flex items-center space-x-2 px-3 py-2 bg-offset rounded-lg transition-all hover:bg-offset cursor-pointer">
-          <Icon name="search" size="small" fill="currentColor" />
+          <Icon name="search" size="small" fill="currentColor" className="text-icon-default" />
           <span className="text-sm text-subdued">Search</span>
         </div>
       </div>

@@ -26,7 +26,7 @@ const Tooltip = ({
   };
 
   const variantModeClasses = {
-    default: 'bg-white text-subdued border border-border shadow-md',
+    default: 'bg-offset text-subdued border border-border shadow-md',
     minimal: '',
   };
 

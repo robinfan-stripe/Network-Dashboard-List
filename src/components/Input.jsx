@@ -111,7 +111,7 @@ const Input = ({
           onChange={handleChange}
           placeholder={placeholder}
           disabled={disabled}
-          className={`w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-[rgba(8,142,249,0.36)] focus:ring-4 text-[16px] sm:text-sm bg-white text-default disabled:opacity-60 disabled:bg-gray-100 ${leftPadding} ${rightPadding} ${error ? 'border-critical' : ''} ${className}`}
+          className={`w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-[rgba(8,142,249,0.36)] focus:ring-4 text-[16px] sm:text-sm text-default placeholder:text-placeholder disabled:opacity-60 disabled:bg-gray-100 ${leftPadding} ${rightPadding} ${error ? 'border-critical' : ''} ${className}`}
           {...props}
         />
         {suffix && (
@@ -159,7 +159,7 @@ export const Textarea = ({
       onChange={onChange}
       placeholder={placeholder}
       rows={rows}
-      className={`w-full px-3 py-2 bg-white border border-border rounded-md focus:outline-none focus:ring-[rgba(8,142,249,0.36)] focus:ring-4 text-[16px] sm:text-sm resize-none ${error ? 'border-critical' : ''} ${className}`}
+      className={`w-full px-3 py-2 bg-background text-default placeholder:text-placeholder border border-border rounded-md focus:outline-none focus:ring-[rgba(8,142,249,0.36)] focus:ring-4 text-[16px] sm:text-sm resize-none ${error ? 'border-critical' : ''} ${className}`}
       {...props}
     />
   );
@@ -210,7 +210,7 @@ export const Select = ({
     <select
       value={value}
       onChange={onChange}
-      className={`border border-border rounded-md focus:outline-none focus:ring-[rgba(8,142,249,0.36)] focus:ring-4 appearance-none bg-no-repeat bg-white text-default disabled:opacity-50 disabled:bg-gray-100 ${sizes[size]} ${error ? 'border-critical' : ''} ${className}`}
+      className={`border border-border rounded-md focus:outline-none focus:ring-[rgba(8,142,249,0.36)] focus:ring-4 appearance-none bg-no-repeat bg-background text-default placeholder:text-placeholder disabled:opacity-50 disabled:bg-gray-100 ${sizes[size]} ${error ? 'border-critical' : ''} ${className}`}
       style={{
         backgroundImage: `url("${selectChevronUrl}")`,
         backgroundPosition: chevronPositions[size],
@@ -263,7 +263,7 @@ export const Checkbox = ({
         <div
           className={`w-[16px] h-[16px] mt-0.5 border rounded-sm transition-all flex items-center justify-center peer-focus:ring-[rgba(8,142,249,0.36)] peer-focus:ring-4 ${checked
             ? 'bg-blurple border-blurple'
-            : 'bg-white border-border group-hover:border-gray-400'
+            : 'bg-surface border-border group-hover:border-gray-400'
             }`}
         >
           {checked && (
@@ -314,7 +314,7 @@ export const Radio = ({
         <div
           className={`w-[16px] h-[16px] mt-0.5 border rounded-full transition-all flex items-center justify-center peer-focus:ring-[rgba(8,142,249,0.36)] peer-focus:ring-4 ${checked
             ? 'bg-blurple border-blurple'
-            : 'bg-white border-border group-hover:border-gray-400'
+            : 'bg-surface border-border group-hover:border-gray-400'
             }`}
         >
           {checked && (
